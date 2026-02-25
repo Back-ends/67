@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embed & Protect</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; }
+        .controls { padding: 20px; background: #f4f4f4; border-bottom: 1px solid #ccc; }
+        input { padding: 8px; width: 300px; }
+        button { padding: 8px 15px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+        #viewer { flex-grow: 1; border: none; width: 100%; display: none; }
+        .status { margin-top: 10px; font-size: 0.9em; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <h2>Site Embedder</h2>
+    <input type="url" id="urlInput" placeholder="https://example.com">
+    <button onclick="loadSite()">Embed Site</button>
+    <div class="status">Type a URL above. Once embedded, try closing this tab.</div>
+</div>
+
+<iframe id="viewer"></iframe>
+
+<script>
+    // 1. The "Unsaved Changes" Logic
+    window.addEventListener('beforeunload', (event) => {
+        // Cancel the event to trigger the browser's native confirmation dialog
+        event.preventDefault();
+        // Standard requirement for Chrome/Firefox
+        event.returnValue = ''; 
+    });
+
+    // 2. The Embedding Logic
+    function loadSite() {
+        const url = document.getElementById('urlInput').value;
+        const iframe = document.getElementById('viewer');
+        
+        if (url) {
+            iframe.src = url;
+            iframe.style.display = 'block';
+        } else {
+            alert("Please enter a valid URL.");
+        }
+    }
+</script>
+
+</body>
+</html>
